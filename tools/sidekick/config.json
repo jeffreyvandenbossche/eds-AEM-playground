@@ -1,0 +1,19 @@
+{
+  "project": "AEM XWalk Boilerplate - EDS ",
+  "editUrlLabel": "AEM Editor",
+  "editUrlPattern": "{{contentSourceUrl}}{{pathname}}?cmd=open",
+  "plugins": [
+    {
+      "id": "library",
+      "title": "Library",
+      "environments": ["edit"],
+      "url": "/tools/sidekick/library.html",
+      "includePaths": ["**.docx**"]
+    },
+    {
+      "id": "foo",
+      "title": "Foo",
+      "url": "/tools/sidekick/foo.html"
+    }
+  ]
+}
