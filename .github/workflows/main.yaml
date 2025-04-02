@@ -11,4 +11,6 @@ jobs:
       with:
         node-version: 20
     - run: npm ci
+      env:
+        NPM_PRIVATE_REPO_AUTH: ${{ secrets.NPM_PRIVATE_REPO_AUTH }}
     - run: npm run lint
