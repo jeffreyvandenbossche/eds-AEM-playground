@@ -21,15 +21,19 @@ try {
         if (typeof defineCustomElements === 'function') {
           defineCustomElements(window, {})
             .then(() => {
+              // eslint-disable-next-line no-console
               console.log('Bridgestone custom elements defined.');
             })
             .catch((err) => {
+              // eslint-disable-next-line no-console
               console.error('Error defining custom elements:', err);
             });
         } else {
+          // eslint-disable-next-line no-console
           console.error('defineCustomElements is not a function:', defineCustomElements);
         }
       } catch (loaderError) {
+        // eslint-disable-next-line no-console
         console.error('Failed to load defineCustomElements:', loaderError);
       }
     })

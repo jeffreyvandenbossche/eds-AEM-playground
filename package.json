@@ -9,8 +9,7 @@
     "lint": "npm run lint:js && npm run lint:css",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "copy-components": "node copy-components.js"
+    "preview": "vite preview"
   },
   "repository": {
     "type": "git",
