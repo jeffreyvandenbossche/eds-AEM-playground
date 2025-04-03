@@ -10,7 +10,7 @@ import {
   waitForFirstImage,
   loadSection,
   loadSections,
-  loadCSS,
+  loadCSS, loadScript,
 } from './aem.js';
 /**
  * Builds hero block and prepends to main in a new section.
@@ -107,6 +107,7 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
+  await loadScript(`${window.hlx.codeBasePath}/dist/libs/bridgestone-web-components/esm/loader.js`, {});
 }
 
 /**
