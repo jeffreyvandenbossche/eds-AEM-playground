@@ -18,6 +18,7 @@ export default defineConfig(async () => {
     ],
     build: {
       outDir: 'dist',
+      target: 'es2022', // Add this line to support top-level await
       rollupOptions: {
         input: {
           // Use 404.html as the entry point since it exists in your project
