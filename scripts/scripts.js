@@ -118,7 +118,11 @@ function loadDelayed() {
   window.setTimeout(() => import('./delayed.js'), 3000);
   // Load web components
   loadScript(`${window.hlx.codeBasePath}/dist/libs/bridgestone-web-components/index.js`, {})
-    .then(() => window.setTimeout(() => import('./web-components.js'), 1000));
+    .then(() => {
+      // eslint-disable-next-line no-console
+      console.log('index.js is loaded successfully');
+      window.setTimeout(() => import('./web-components.js'), 1000);
+    });
 
   // load anything that can be postponed to the latest here
 }
