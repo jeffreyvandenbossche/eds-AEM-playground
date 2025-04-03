@@ -107,7 +107,6 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
-  await loadScript(`${window.hlx.codeBasePath}/dist/libs/bridgestone-web-components/esm/loader.js`, {});
 }
 
 /**
@@ -118,7 +117,9 @@ function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
   // Load web components
-  window.setTimeout(() => import('./web-components.js'), 1000);
+  loadScript(`${window.hlx.codeBasePath}/dist/libs/bridgestone-web-components/index.js`, {})
+    .then(() => window.setTimeout(() => import('./web-components.js'), 1000));
+
   // load anything that can be postponed to the latest here
 }
 
