@@ -2,11 +2,12 @@
 coverage/*
 logs/*
 node_modules/*
-!libs/
-!libs/**
 
 helix-importer-ui
 .DS_Store
 *.bak
 .idea
 
+# Don't ignore libs directory for web components
+!libs/
+!libs/**
