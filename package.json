@@ -6,7 +6,12 @@
   "scripts": {
     "lint:js": "eslint .",
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
-    "lint": "npm run lint:js && npm run lint:css"
+    "lint": "npm run lint:js && npm run lint:css",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "copy-components": "node copy-components.js"
+
   },
   "repository": {
     "type": "git",
@@ -19,14 +24,17 @@
   },
   "homepage": "https://github.com/adobe/aem-boilerplate#readme",
   "devDependencies": {
-    "@babel/eslint-parser": "7.25.9",
+    "@babel/eslint-parser": "7.27.0",
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.31.0",
-    "stylelint": "16.12.0",
-    "stylelint-config-standard": "36.0.1"
+    "stylelint": "16.17.0",
+    "stylelint-config-standard": "37.0.0"
   },
   "dependencies": {
-    "@springbokagency/bridgestone-web-components": "^1.0.5"
+    "@springbokagency/bridgestone-web-components": "^1.0.5",
+    "vite": "^6.2.4",
+    "vite-plugin-copy": "^0.1.6",
+    "vite-plugin-static-copy": "^2.3.0"
   }
 }

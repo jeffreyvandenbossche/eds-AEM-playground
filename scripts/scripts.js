@@ -12,7 +12,6 @@ import {
   loadSections,
   loadCSS,
 } from './aem.js';
-
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -117,6 +116,8 @@ async function loadLazy(doc) {
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
+  // Load web components
+  window.setTimeout(() => import('./web-components.js'), 1000);
   // load anything that can be postponed to the latest here
 }
 
