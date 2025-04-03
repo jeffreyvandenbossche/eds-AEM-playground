@@ -6,7 +6,7 @@ try {
   console.log('Attempting to load web components');
 
   // Load from the libs directory where Vite copied the files
-  import(`${window.hlx.codeBasePath}/libs/bridgestone-web-components/index.js`)
+  import(`${window.hlx.codeBasePath}/dist/libs/bridgestone-web-components/index.js`)
     .then(async () => {
       // eslint-disable-next-line no-console
       console.log('Web components loaded successfully');
@@ -15,7 +15,7 @@ try {
 
       // Import the defineCustomElements function from the ESM folder
       try {
-        const loaderModule = await import(`${window.hlx.codeBasePath}/libs/bridgestone-web-components/esm/loader.js`);
+        const loaderModule = await import(`${window.hlx.codeBasePath}/dist/libs/bridgestone-web-components/esm/loader.js`);
         defineCustomElements = loaderModule.defineCustomElements;
 
         if (typeof defineCustomElements === 'function') {
