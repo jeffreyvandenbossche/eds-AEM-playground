@@ -1,4 +1,4 @@
-class BsQuote {
+class Bsquote {
   constructor({
     quote,
     name,
@@ -27,7 +27,7 @@ function trimHtmlAttributes(html) {
 export default async function decorate(block) {
   const [quotation, attribution] = [...block.children].map((c) => c.firstElementChild);
 
-  const carousel = new BsQuote({
+  const carousel = new Bsquote({
     quote: quotation.innerHTML.replace(/<[^>]*>/g, ''),
     name: trimHtmlAttributes(attribution.innerHTML.replace(/<[^>]*>/g, '')),
   });
