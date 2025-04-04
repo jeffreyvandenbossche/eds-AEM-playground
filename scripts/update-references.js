@@ -3,8 +3,8 @@ const path = require('path');
 
 function updateReferences(directory) {
   const files = fs.readdirSync(directory);
-  
-  files.forEach(file => {
+
+  files.forEach((file) => {
     const filePath = path.join(directory, file);
     if (fs.statSync(filePath).isDirectory()) {
       updateReferences(filePath);
@@ -18,4 +18,3 @@ function updateReferences(directory) {
 }
 
 updateReferences('.');
-console.log('References updated successfully.');
