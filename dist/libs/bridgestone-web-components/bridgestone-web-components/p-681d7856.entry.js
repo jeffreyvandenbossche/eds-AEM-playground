@@ -1,0 +1,2 @@
+import{r as s,h as r,H as t}from"./p-889079a6.js";const n=class{constructor(r){s(this,r);this.pong="Pong"}render(){return r(t,null,this.pong)}};export{n as base_ping};
+//# sourceMappingURL=p-681d7856.entry.js.map
