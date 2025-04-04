@@ -8,7 +8,7 @@
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
     "lint": "npm run lint:js && npm run lint:css",
     "dev": "vite",
-    "build": "vite build && node scripts/update-references.js",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "repository": {
