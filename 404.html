@@ -9,28 +9,6 @@
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:title" content="Page not found">
-  <script src="/scripts/scripts.js" type="module" crossorigin="use-credentials"></script>
-  <script type="module">
-    window.addEventListener('load', () => {
-      if (document.referrer) {
-        const { origin, pathname } = new URL(document.referrer);
-        if (origin === window.location.origin) {
-          const backBtn = document.createElement('a');
-          backBtn.classList.add('button', 'error-button-back');
-          backBtn.href = pathname;
-          backBtn.textContent = 'Go back';
-          backBtn.title = 'Go back';
-          const btnContainer = document.querySelector('.button-container');
-          btnContainer.append(backBtn);
-        }
-      }
-    });
-  </script>
-  <script type="module">
-    import { sampleRUM } from '/scripts/aem.js';
-    sampleRUM('404', { source: document.referrer });
-  </script>
-  <link rel="stylesheet" href="/styles/styles.css">
   <style>
     main.error {
       min-height: calc(100vh - var(--nav-height));
@@ -46,7 +24,8 @@
       font-family: monospace;
     }
   </style>
-  <link rel="stylesheet" href="/styles/lazy-styles.css">
+  <script type="module" crossorigin src="/scripts/main-TJP97zJH.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/main-CGHocLth.css">
 </head>
 
 <body>
