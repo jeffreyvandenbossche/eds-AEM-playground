@@ -1,0 +1,1 @@
+{"version":3,"file":"modes.js","sourceRoot":"","sources":["../../src/utils/modes.ts"],"names":[],"mappings":"AAAA,MAAM,CAAN,IAAY,IAGX;AAHD,WAAY,IAAI;EACd,mCAA2B,CAAA;EAC3B,+BAAuB,CAAA;AACzB,CAAC,EAHW,IAAI,KAAJ,IAAI,QAGf","sourcesContent":["export enum Mode {\n  Bridgestone = 'bridgestone',\n  Firststop = 'firststop',\n}\n"]}
