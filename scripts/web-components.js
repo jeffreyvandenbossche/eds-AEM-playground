@@ -17,9 +17,10 @@ try {
     const loaderModule = await import(`${window.hlx.codeBasePath}/dist/libs/bridgestone-web-components/esm/loader.js`);
     defineCustomElements = loaderModule.defineCustomElements;
     if (typeof defineCustomElements === 'function') {
-      await defineCustomElements(window, {});
-      // eslint-disable-next-line no-console
-      console.log('Bridgestone custom elements defined.');
+      defineCustomElements(window, { resourcesUrl: '/dist/assets/assets' }).then(() => {
+        // eslint-disable-next-line no-console
+        console.log('Bridgestone custom elements defined.');
+      });
     } else {
       // eslint-disable-next-line no-console
       console.error('defineCustomElements is not a function:', defineCustomElements);
