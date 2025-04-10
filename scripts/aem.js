@@ -131,10 +131,10 @@ function sampleRUM(checkpoint, data) {
  */
 function addPreconnects() {
   const domains = [
-    'https://s7g10.scene7.com'
+    'https://s7g10.scene7.com',
   ];
-  
-  domains.forEach(domain => {
+
+  domains.forEach((domain) => {
     if (!document.querySelector(`link[rel="preconnect"][href="${domain}"]`)) {
       // Add preconnect
       const preconnectLink = document.createElement('link');
@@ -142,7 +142,7 @@ function addPreconnects() {
       preconnectLink.href = domain;
       preconnectLink.crossOrigin = 'anonymous';
       document.head.appendChild(preconnectLink);
-      
+
       // Add dns-prefetch as fallback
       const dnsPrefetchLink = document.createElement('link');
       dnsPrefetchLink.rel = 'dns-prefetch';
@@ -171,7 +171,7 @@ function setup() {
       console.log(error);
     }
   }
-  
+
   // Add preconnect links for performance optimization
   addPreconnects();
 }
