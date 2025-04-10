@@ -13,9 +13,6 @@ class Bsheaderbanner {
 }
 
 export default async function decorate(block) {
-
   const carousel = new Bsheaderbanner({});
-  console.log('block');
-  console.log(block);
   block.innerHTML = carousel.html;
 }
