@@ -1,166 +1,29 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
-// media query match that indicates mobile/tablet width
-const isDesktop = window.matchMedia('(min-width: 900px)');
-
-function closeOnEscape(e) {
-  if (e.code === 'Escape') {
-    const nav = document.getElementById('nav');
-    const navSections = nav.querySelector('.nav-sections');
-    const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
-    if (navSectionExpanded && isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleAllNavSections(navSections);
-      navSectionExpanded.focus();
-    } else if (!isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleMenu(nav, navSections);
-      nav.querySelector('button').focus();
-    }
-  }
-}
-
-function closeOnFocusLost(e) {
-  const nav = e.currentTarget;
-  if (!nav.contains(e.relatedTarget)) {
-    const navSections = nav.querySelector('.nav-sections');
-    const navSectionExpanded = navSections.querySelector('[aria-expanded="true"]');
-    if (navSectionExpanded && isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleAllNavSections(navSections, false);
-    } else if (!isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleMenu(nav, navSections, false);
-    }
-  }
-}
-
-function openOnKeydown(e) {
-  const focused = document.activeElement;
-  const isNavDrop = focused.className === 'nav-drop';
-  if (isNavDrop && (e.code === 'Enter' || e.code === 'Space')) {
-    const dropExpanded = focused.getAttribute('aria-expanded') === 'true';
-    // eslint-disable-next-line no-use-before-define
-    toggleAllNavSections(focused.closest('.nav-sections'));
-    focused.setAttribute('aria-expanded', dropExpanded ? 'false' : 'true');
-  }
-}
-
-function focusNavSection() {
-  document.activeElement.addEventListener('keydown', openOnKeydown);
-}
-
-/**
- * Toggles all nav sections
- * @param {Element} sections The container element
- * @param {Boolean} expanded Whether the element should be expanded or collapsed
- */
-function toggleAllNavSections(sections, expanded = false) {
-  sections.querySelectorAll('.nav-sections .default-content-wrapper > ul > li').forEach((section) => {
-    section.setAttribute('aria-expanded', expanded);
-  });
-}
-
-/**
- * Toggles the entire nav
- * @param {Element} nav The container element
- * @param {Element} navSections The nav sections within the container element
- * @param {*} forceExpanded Optional param to force nav expand behavior when not null
- */
-function toggleMenu(nav, navSections, forceExpanded = null) {
-  const expanded = forceExpanded !== null ? !forceExpanded : nav.getAttribute('aria-expanded') === 'true';
-  const button = nav.querySelector('.nav-hamburger button');
-  document.body.style.overflowY = (expanded || isDesktop.matches) ? '' : 'hidden';
-  nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-  toggleAllNavSections(navSections, expanded || isDesktop.matches ? 'false' : 'true');
-  button.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
-  // enable nav dropdown keyboard accessibility
-  const navDrops = navSections.querySelectorAll('.nav-drop');
-  if (isDesktop.matches) {
-    navDrops.forEach((drop) => {
-      if (!drop.hasAttribute('tabindex')) {
-        drop.setAttribute('tabindex', 0);
-        drop.addEventListener('focus', focusNavSection);
-      }
-    });
-  } else {
-    navDrops.forEach((drop) => {
-      drop.removeAttribute('tabindex');
-      drop.removeEventListener('focus', focusNavSection);
-    });
-  }
-
-  // enable menu collapse on escape keypress
-  if (!expanded || isDesktop.matches) {
-    // collapse menu on escape press
-    window.addEventListener('keydown', closeOnEscape);
-    // collapse menu on focus lost
-    nav.addEventListener('focusout', closeOnFocusLost);
-  } else {
-    window.removeEventListener('keydown', closeOnEscape);
-    nav.removeEventListener('focusout', closeOnFocusLost);
-  }
-}
-
 /**
  * loads and decorates the header, mainly the nav
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
-  // load nav as fragment
+  // Load nav fragment (keep this for potential future use)
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  const fragment = await loadFragment(navPath);
+  await loadFragment(navPath);
 
-  // decorate nav DOM
+  // Clear existing content
   block.textContent = '';
-  const nav = document.createElement('nav');
-  nav.id = 'nav';
-  while (fragment.firstElementChild) nav.append(fragment.firstElementChild);
 
-  const classes = ['brand', 'sections', 'tools'];
-  classes.forEach((c, i) => {
-    const section = nav.children[i];
-    if (section) section.classList.add(`nav-${c}`);
-  });
+  // Create custom bs-header-navigation element
+  const bsHeader = document.createElement('bs-header-navigation');
+  bsHeader.setAttribute('header-navigation', '{"mainLogo":{"src":"https://s7g10.scene7.com/is/content/bridgestoneeu/bridgestone-solutions-for-your-journey","srcset":null,"imageSizes":null,"altText":null,"caption":null,"cover":false,"width":0,"height":0,"lazy":false,"empty":false},"mobileMainLogo":{"src":"https://s7g10.scene7.com/is/content/bridgestoneeu/B-mark-logo","srcset":null,"imageSizes":null,"altText":null,"caption":null,"cover":false,"width":0,"height":0,"lazy":false,"empty":false},"stickyLogo":{"src":"https://s7g10.scene7.com/is/content/bridgestoneeu/bridgestone-solutions-for-your-journey","srcset":null,"imageSizes":null,"altText":null,"caption":null,"cover":false,"width":0,"height":0,"lazy":false,"empty":false},"stickyButton":null,"navigation":{"primary":[{"href":null,"title":"Our Company","target":null,"description":null,"thumbnail":null,"children":[{"href":"/our-company/about.html","title":"About","target":null,"description":null,"thumbnail":null,"children":null},{"href":"/our-company/sustainability.html","title":"Sustainability","target":null,"description":null,"thumbnail":null,"children":null},{"href":"/our-company/carreers.html","title":"Careers","target":null,"description":null,"thumbnail":null,"children":null},{"href":"/our-company/enliten.html","title":"ENLITEN","target":null,"description":null,"thumbnail":null,"children":null},{"href":"/our-company/driveguard.html","title":"DriveGuard","target":null,"description":null,"thumbnail":null,"children":null}]},{"href":"/press.html","title":"Press","target":null,"description":null,"thumbnail":null,"children":null},{"href":null,"title":"Promotions","target":null,"description":null,"thumbnail":null,"children":[{"href":"/promotions/Bridgestone-Rewards.html","title":"Bridgestone Rewards","target":null,"description":null,"thumbnail":null,"children":null}]},{"href":null,"title":"Stories","target":null,"description":null,"thumbnail":null,"children":[{"href":"/stories/our-people-and-partners.html","title":"Our People and Partners Stories","target":null,"description":null,"thumbnail":null,"children":null},{"href":"/stories/sustainability.html","title":"Sustainability","target":null,"description":null,"thumbnail":null,"children":null}]},{"href":"/contact-us.html","title":"Contact Us","target":null,"description":null,"thumbnail":null,"children":null}],"secondary":[{"href":null,"title":"Our Products","target":null,"description":null,"thumbnail":null,"children":[{"href":"/our-products/car-tyres.html","title":"Car & 4x4 tyres","target":null,"description":null,"thumbnail":{"src":"/content/bridgestone/gb/en/home-page/our-products/car-tyres.thumb.300.300.png","srcset":null,"imageSizes":null,"altText":null,"caption":null,"cover":false,"width":0,"height":0,"lazy":false,"empty":false},"children":null},{"href":"/our-products/motorcycle-tyres.html","title":"Motorcycle tyres","target":null,"description":null,"thumbnail":{"src":"/content/bridgestone/gb/en/home-page/our-products/motorcycle-tyres.thumb.300.300.png","srcset":null,"imageSizes":null,"altText":null,"caption":null,"cover":false,"width":0,"height":0,"lazy":false,"empty":false},"children":null},{"href":"/our-products/agricultural.html","title":"Agricultural tyres","target":null,"description":null,"thumbnail":{"src":"/content/bridgestone/gb/en/home-page/our-products/agricultural.thumb.300.300.png","srcset":null,"imageSizes":null,"altText":null,"caption":null,"cover":false,"width":0,"height":0,"lazy":false,"empty":false},"children":null},{"href":"/our-products/off-the-road.html","title":"Off the road tyres","target":null,"description":null,"thumbnail":{"src":"/content/bridgestone/gb/en/home-page/our-products/off-the-road.thumb.300.300.png","srcset":null,"imageSizes":null,"altText":null,"caption":null,"cover":false,"width":0,"height":0,"lazy":false,"empty":false},"children":null},{"href":"/our-products/truck-and-bus.html","title":"Truck and bus tyres","target":null,"description":null,"thumbnail":{"src":"/content/bridgestone/gb/en/home-page/our-products/truck-and-bus.thumb.300.300.png","srcset":null,"imageSizes":null,"altText":null,"caption":null,"cover":false,"width":0,"height":0,"lazy":false,"empty":false},"children":null},{"href":"/our-products/retread.html","title":"Retread","target":null,"description":null,"thumbnail":{"src":"/content/bridgestone/gb/en/home-page/our-products/retread.thumb.300.300.png","srcset":null,"imageSizes":null,"altText":null,"caption":null,"cover":false,"width":0,"height":0,"lazy":false,"empty":false},"children":null}]},{"href":null,"title":"Our Solutions","target":null,"description":null,"thumbnail":null,"children":[{"href":"/our-solutions/webfleet.html","title":"Webfleet","target":null,"description":null,"thumbnail":{"src":"/content/bridgestone/gb/en/home-page/our-solutions/webfleet.thumb.300.300.png","srcset":null,"imageSizes":null,"altText":null,"caption":null,"cover":false,"width":0,"height":0,"lazy":false,"empty":false},"children":null},{"href":"/our-solutions/fleetcare.html","title":"Bridgestone Fleet Care","target":null,"description":null,"thumbnail":{"src":"/content/bridgestone/gb/en/home-page/our-solutions/fleetcare.thumb.300.300.png","srcset":null,"imageSizes":null,"altText":null,"caption":null,"cover":false,"width":0,"height":0,"lazy":false,"empty":false},"children":null}]}],"sliderItems":[{"href":"/motorcycle-tyres/sport/battlax-s23.html","title":"NEW Battlax Hypersport S23","target":null,"description":"Experience the new benchmark in the motorcycle hypersport segment. The Bridgestone Battlax Hypersport S23 will take your riding to the next level ","thumbnail":{"src":"https://s7g10.scene7.com/is/image/bridgestoneeu/2023_BSEU_S23_JPG_A_DetailDry-003","srcset":"https://s7g10.scene7.com/is/image/bridgestoneeu/2023_BSEU_S23_JPG_A_DetailDry-003:RATIO-16-9-MOBILE 400w, https://s7g10.scene7.com/is/image/bridgestoneeu/2023_BSEU_S23_JPG_A_DetailDry-003:RATIO-16-9-TABLET 1200w, https://s7g10.scene7.com/is/image/bridgestoneeu/2023_BSEU_S23_JPG_A_DetailDry-003:RATIO-16-9-DESKTOP 1440w, https://s7g10.scene7.com/is/image/bridgestoneeu/2023_BSEU_S23_JPG_A_DetailDry-003:RATIO-16-9-DESKTOP-LARGE 1920w","imageSizes":"1920px, 1440px, 1200px, 400px","altText":null,"caption":null,"cover":false,"width":768,"height":432,"lazy":false,"empty":false},"children":null},{"href":"/car-tyres/summer-tyres-turanza/turanza-all-season-6.html","title":"Turanza All Season 6","target":null,"description":"Drive without hesitation, even when facing rain or occasional snow. Whatever the season, Turanza All Season 6 ensures safety & control","thumbnail":{"src":"https://s7g10.scene7.com/is/image/bridgestoneeu/Turanza-6-product-pictures-bottom-center-1","srcset":"https://s7g10.scene7.com/is/image/bridgestoneeu/Turanza-6-product-pictures-bottom-center-1:RATIO-16-9-MOBILE 400w, https://s7g10.scene7.com/is/image/bridgestoneeu/Turanza-6-product-pictures-bottom-center-1:RATIO-16-9-TABLET 1200w, https://s7g10.scene7.com/is/image/bridgestoneeu/Turanza-6-product-pictures-bottom-center-1:RATIO-16-9-DESKTOP 1440w, https://s7g10.scene7.com/is/image/bridgestoneeu/Turanza-6-product-pictures-bottom-center-1:RATIO-16-9-DESKTOP-LARGE 1920w","imageSizes":"1920px, 1440px, 1200px, 400px","altText":null,"caption":null,"cover":false,"width":768,"height":432,"lazy":false,"empty":false},"children":null}]}}');
 
-  const navBrand = nav.querySelector('.nav-brand');
-  const brandLink = navBrand.querySelector('.button');
-  if (brandLink) {
-    brandLink.className = '';
-    brandLink.closest('.button-container').className = '';
-  }
-
-  const navSections = nav.querySelector('.nav-sections');
-  if (navSections) {
-    navSections.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((navSection) => {
-      if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
-      navSection.addEventListener('click', () => {
-        if (isDesktop.matches) {
-          const expanded = navSection.getAttribute('aria-expanded') === 'true';
-          toggleAllNavSections(navSections);
-          navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        }
-      });
-    });
-  }
-
-  // hamburger for mobile
-  const hamburger = document.createElement('div');
-  hamburger.classList.add('nav-hamburger');
-  hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
-      <span class="nav-hamburger-icon"></span>
-    </button>`;
-  hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
-  nav.prepend(hamburger);
-  nav.setAttribute('aria-expanded', 'false');
-  // prevent mobile nav behavior on window resize
-  toggleMenu(nav, navSections, isDesktop.matches);
-  isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));
-
+  // Create a wrapper for the custom header
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
-  navWrapper.append(nav);
+  navWrapper.append(bsHeader);
   block.append(navWrapper);
+
+  // Add a class to indicate we're using the custom header
+  block.classList.add('bs-custom-header');
 }
