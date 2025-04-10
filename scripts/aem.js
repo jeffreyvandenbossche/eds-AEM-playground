@@ -127,6 +127,32 @@ function sampleRUM(checkpoint, data) {
 }
 
 /**
+ * Add preconnect links for commonly used domains
+ */
+function addPreconnects() {
+  const domains = [
+    'https://s7g10.scene7.com'
+  ];
+  
+  domains.forEach(domain => {
+    if (!document.querySelector(`link[rel="preconnect"][href="${domain}"]`)) {
+      // Add preconnect
+      const preconnectLink = document.createElement('link');
+      preconnectLink.rel = 'preconnect';
+      preconnectLink.href = domain;
+      preconnectLink.crossOrigin = 'anonymous';
+      document.head.appendChild(preconnectLink);
+      
+      // Add dns-prefetch as fallback
+      const dnsPrefetchLink = document.createElement('link');
+      dnsPrefetchLink.rel = 'dns-prefetch';
+      dnsPrefetchLink.href = domain;
+      document.head.appendChild(dnsPrefetchLink);
+    }
+  });
+}
+
+/**
  * Setup block utils.
  */
 function setup() {
@@ -145,6 +171,9 @@ function setup() {
       console.log(error);
     }
   }
+  
+  // Add preconnect links for performance optimization
+  addPreconnects();
 }
 
 /**
@@ -719,6 +748,7 @@ async function loadSections(element) {
 init();
 
 export {
+  addPreconnects,
   buildBlock,
   createOptimizedPicture,
   decorateBlock,
