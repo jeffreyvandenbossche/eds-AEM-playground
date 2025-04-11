@@ -665,6 +665,19 @@ async function loadHeader(header) {
   const headerBlock = buildBlock('header', '');
   header.append(headerBlock);
   decorateBlock(headerBlock);
+
+  // If bs-default-layout exists, move the header into it
+  if (window.hlx && window.hlx.bsLayout) {
+    const headerPlaceholder = document.getElementById('header-placeholder');
+    if (headerPlaceholder) {
+      // Replace the placeholder with the actual header
+      window.hlx.bsLayout.replaceChild(header, headerPlaceholder);
+    } else {
+      // If placeholder doesn't exist for some reason, just prepend the header
+      window.hlx.bsLayout.prepend(header);
+    }
+  }
+
   return loadBlock(headerBlock);
 }
 
@@ -726,14 +739,26 @@ async function loadSections(element) {
   // Create bs-default-layout element
   const bsLayout = document.createElement('bs-default-layout');
   bsLayout.setAttribute('theme', 'light-mode');
+
   const sections = [...element.querySelectorAll('div.section')];
+
   if (sections.length > 0) {
     const firstSection = sections[0];
     element.insertBefore(bsLayout, firstSection);
 
+    // Create a placeholder for the header
+    const headerPlaceholder = document.createElement('div');
+    headerPlaceholder.id = 'header-placeholder';
+    bsLayout.appendChild(headerPlaceholder);
+
+    // Move all sections inside bs-default-layout
     sections.forEach((section) => {
       bsLayout.appendChild(section);
     });
+
+    // Store the bs-layout reference for later use in loadHeader
+    window.hlx = window.hlx || {};
+    window.hlx.bsLayout = bsLayout;
   }
 
   for (let i = 0; i < sections.length; i += 1) {
